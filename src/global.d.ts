@@ -17,6 +17,18 @@ declare class Graphics {
 	reset(): void
 	setFontAlign(x: -1 | 0 | 1, y: -1 | 0 | 1, rotation: 0 | 1 | 2 | 3): Graphics
 	setFont(name?: "4x6" | "Vector12", size?: number): Graphics
+	theme: {
+		fg: number // foreground colour
+		bg: number // background colour
+		fg2: number // accented foreground colour
+		bg2: number // accented background colour
+		fgH: number // highlighted foreground colour
+		bgH: number // highlighted background colour
+		dark: boolean // Is background dark (eg. foreground should be a light colour)
+	}
+	setColor(colorId: number): void
+	setBgColor(colorId: number): void
+	flip(): void
 }
 declare const g: Graphics
 declare const BTN1: Pin
@@ -55,6 +67,10 @@ declare class Bangle {
 	static loadWidgets: () => void
 	static drawWidgets: () => void
 	static showLauncher: () => void
+	static on: (
+		event: "touch",
+		handler: (button: 1 | 2, xy: { x: number; y: number }) => void
+	) => void
 }
 
 interface Widget {

@@ -1,6 +1,7 @@
 import { logic } from "../logic/logic"
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./const"
 import { drawTabs, selectedTab, shownTabText } from "./tabs/tabBase"
+import fs from "../fs"
 
 interface Particle {
 	x: number
@@ -13,12 +14,17 @@ interface Particle {
 export const particles: Particle[] = []
 
 let lastNow = Date.now()
+let lastSave = Date.now()
 let now = Date.now()
 
 export function drawEverything(): void {
 	now = Date.now()
 
 	logic.processCps(now - lastNow)
+	if (now - lastSave > 1000) {
+		fs.writeJSON("cclicker.json", logic.makeSave())
+		lastSave = now
+	}
 	g.clear()
 
 	selectedTab.draw(g)

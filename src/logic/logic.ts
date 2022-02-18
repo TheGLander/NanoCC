@@ -1,5 +1,11 @@
 let nextId = 0
 
+export interface Save {
+	cookies: number
+	building: number[]
+	lastTime: number
+}
+
 export class Logic {
 	cookies = 0
 	buildings: Building[] = []
@@ -21,6 +27,19 @@ export class Logic {
 
 	processCps(d: number): void {
 		this.cookies += this.cps * (d / 1000)
+	}
+	makeSave(): Save {
+		return {
+			cookies: this.cookies,
+			building: this.buildings.map(val => val.amount),
+			lastTime: Date.now(),
+		}
+	}
+	loadSave(save: Save): void {
+		this.cookies = save.cookies
+		save.building.forEach((val, i) => (this.buildings[i].amount = val))
+		this.calculateCps()
+		this.processCps(Date.now() - save.lastTime)
 	}
 }
 

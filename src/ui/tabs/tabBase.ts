@@ -7,7 +7,7 @@ export let selectedTab: Tab
 export class Tab {
 	constructor(
 		public name: string,
-		public iconName: string,
+		public icon: () => Image,
 		public draw: (this: Tab, g: Graphics) => void
 	) {
 		tabs.push(this)
@@ -29,11 +29,25 @@ export function drawTabs(g: Graphics): void {
 			g.setColor(g.theme.bgH)
 			g.fillRect(i * offset, TABS_Y, (i + 1) * offset, SCREEN_HEIGHT)
 		}
-		if (tab === selectedTab) g.setColor(g.theme.fgH)
-		else g.setColor(g.theme.fg)
-		g.drawString(tab.iconName, i * offset, TABS_Y)
+		//if (tab === selectedTab) g.setColor(g.theme.fgH)
+		//else g.setColor(g.theme.fg)
+		const img = tab.icon()
+		if (tab === selectedTab)
+			img.palette = new Uint16Array([g.theme.fgH, g.theme.bgH])
+		else img.palette = new Uint16Array([g.theme.fg, g.theme.bg])
+		const imgScale = 25 / img.height
+		g.drawImage(
+			img,
+			i * offset + offset / 2 - (img.width * imgScale) / 2,
+			TABS_Y,
+			{
+				scale: imgScale,
+			}
+		)
+
 		i++
 	}
+	g.setColor(g.theme.fg)
 }
 
 declare var process: NodeJS.Process & {

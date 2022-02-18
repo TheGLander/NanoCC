@@ -1,3 +1,3 @@
-import { Tab } from "./tabBase"
+//import { Tab } from "./tabBase"
 
-new Tab("Misc", "MSC", () => {})
+//new Tab("Misc", "MSC", () => {})

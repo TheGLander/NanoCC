@@ -1,3 +1,4 @@
+import shopIcon from "../../img/shopIcon"
 import { Building, logic } from "../../logic/logic"
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const"
 import { particles } from "../draw"
@@ -8,7 +9,7 @@ let scrollPos = 0
 const listHeight = SCREEN_HEIGHT - 25
 const listingHeight = listHeight / 3
 
-const shopTab = new Tab("Shop", "SHP", g => {
+const shopTab = new Tab("Shop", shopIcon, g => {
 	const buildingOffset = Math.floor(scrollPos / listingHeight)
 	g.setFontAlign(-1, -1, 0)
 	g.setFont("4x6", 3)

@@ -1,4 +1,4 @@
-function pcookie() {
+function perfectCookie() {
 	return {
 		width: 57,
 		height: 57,
@@ -11,3 +11,5 @@ function pcookie() {
 		),
 	}
 }
+
+export default perfectCookie

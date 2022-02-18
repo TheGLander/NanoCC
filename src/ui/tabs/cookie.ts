@@ -1,11 +1,12 @@
-import getImage from "../../getImage"
+import cookieIcon from "../../img/cookieIcon"
+import perfectCookieImage from "../../img/perfectCookie"
 import { logic } from "../../logic/logic"
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const"
 import { particles } from "../draw"
 import { selectedTab, Tab } from "./tabBase"
 
-const cookieTab = new Tab("Cookie", "CKI", g => {
-	const perfectCookie = getImage("pcookie")
+const cookieTab = new Tab("Cookie", cookieIcon, g => {
+	const perfectCookie = perfectCookieImage()
 	g.drawImage(
 		perfectCookie,
 		(SCREEN_WIDTH - perfectCookie.width * 2) / 2,

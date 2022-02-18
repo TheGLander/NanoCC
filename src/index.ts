@@ -1,9 +1,5 @@
-import { drawTabs, initTabs } from "./ui/tabs/tabBase"
+import { selectTab } from "./ui/tabs/tabBase"
 import "./ui/tabs"
+import cookieTab from "./ui/tabs/cookie"
 
-g.clear()
-g.reset()
-g.setFont("4x6", 5)
-
-initTabs()
-drawTabs()
+selectTab(cookieTab)

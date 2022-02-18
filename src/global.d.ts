@@ -8,6 +8,7 @@ declare interface Image {
 }
 
 declare class Graphics {
+	static createArrayBuffer: Graphics["createArrayBuffer"]
 	drawImage(
 		image: Image | string,
 		x: number,
@@ -51,7 +52,10 @@ declare class Bangle {
 	static accelRd: (reg: number, cnt: number) => unknown
 	static project: (latlong: unknown) => unknown
 	static buzz: (time: number, strength: number) => Promise<unknown>
-	static off: () => void
+	static off: (
+		event: "touch",
+		handler: (button: 1 | 2, xy: { x: number; y: number }) => void
+	) => void
 	static setLCDBrightness: (brightness: number) => void
 	static setLCDMode: (mode: unknown) => void
 	static getLCDMode: () => unknown
@@ -69,7 +73,7 @@ declare class Bangle {
 	static showLauncher: () => void
 	static on: (
 		event: "touch",
-		handler: (button: 1 | 2, xy: { x: number; y: number }) => void
+		handler: (button: 1 | 2, xy?: { x: number; y: number }) => void
 	) => void
 }
 

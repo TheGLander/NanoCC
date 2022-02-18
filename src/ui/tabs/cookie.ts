@@ -1,8 +1,10 @@
 import getImage from "../../getImage"
+import { logic } from "../../logic/logic"
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const"
-import { Tab } from "./tabBase"
+import { particles } from "../draw"
+import { selectedTab, Tab } from "./tabBase"
 
-new Tab("Cookie", "CKI", () => {
+const cookieTab = new Tab("Cookie", "CKI", g => {
 	const perfectCookie = getImage("pcookie")
 	g.drawImage(
 		perfectCookie,
@@ -10,4 +12,20 @@ new Tab("Cookie", "CKI", () => {
 		(SCREEN_HEIGHT - perfectCookie.height * 2) / 2,
 		{ scale: 2 }
 	)
+	g.setFontAlign(0, 0, 0)
+	g.drawString(
+		`${logic.cookies} cookie${logic.cookies === 1 ? "" : "s"}`,
+		SCREEN_WIDTH / 2,
+		10
+	)
+})
+
+export default cookieTab
+
+Bangle.on("touch", (_btn, xy) => {
+	if (selectedTab !== cookieTab) return
+	if (!xy)
+		xy = { x: Math.random() * SCREEN_WIDTH, y: Math.random() * SCREEN_HEIGHT }
+	particles.push({ x: xy.x, y: xy.y, str: "+1", life: 5 })
+	logic.cookies++
 })

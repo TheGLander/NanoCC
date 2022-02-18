@@ -35,3 +35,5 @@ export class Logic {
 	cookies = 0
 	priceIncrease = 1.15
 }
+
+export const logic = new Logic()

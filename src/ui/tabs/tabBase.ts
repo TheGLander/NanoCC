@@ -1,13 +1,14 @@
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const"
+import { drawEverything } from "../draw"
 
 const tabs: Tab[] = []
-let selectedTab: Tab
+export let selectedTab: Tab
 
 export class Tab {
 	constructor(
 		public name: string,
 		public iconName: string,
-		public draw: (this: Tab) => void
+		public draw: (this: Tab, g: Graphics) => void
 	) {
 		tabs.push(this)
 	}
@@ -15,15 +16,10 @@ export class Tab {
 
 const TABS_Y = SCREEN_HEIGHT - 25
 
-export function initTabs(): void {
-	g.clear()
-	selectedTab = tabs[0]
-	drawTabs()
-	selectedTab.draw()
-}
-
-export function drawTabs(): void {
+export function drawTabs(g: Graphics): void {
 	const offset = SCREEN_WIDTH / tabs.length
+	g.setFontAlign(-1, -1, 0)
+	g.setFont("4x6", 5)
 	g.setColor(g.theme.bg)
 	g.fillRect(0, TABS_Y, SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -38,7 +34,6 @@ export function drawTabs(): void {
 		g.drawString(tab.iconName, i * offset, TABS_Y)
 		i++
 	}
-	g.flip()
 }
 
 declare var process: NodeJS.Process & {
@@ -49,35 +44,46 @@ const isB2 = process.env.HWVERSION === 2
 
 if (!isB2) {
 	setWatch(
-		() => {
-			selectedTab =
-				tabs[(tabs.indexOf(selectedTab) - 1 + tabs.length) % tabs.length]
-			g.clear()
-			selectedTab.draw()
-			drawTabs()
-		},
+		() =>
+			selectTab(
+				tabs[(tabs.length + tabs.indexOf(selectedTab) - 1) % tabs.length]
+			),
 		BTN1,
 		{ repeat: true }
 	)
 
 	setWatch(
-		() => {
-			selectedTab = tabs[(tabs.indexOf(selectedTab) + 1) % tabs.length]
-			g.clear()
-			selectedTab.draw()
-			drawTabs()
-		},
+		() => selectTab(tabs[(tabs.indexOf(selectedTab) + 1) % tabs.length]),
 		new Pin(0),
 		{ repeat: true }
 	)
 } else {
 	Bangle.on("touch", (_button, xy) => {
-		if (xy.y < TABS_Y) return
-		const tab = tabs[Math.floor((xy.x / SCREEN_HEIGHT) * tabs.length)]
+		if (xy!.y < TABS_Y) return
+		const tab = tabs[Math.floor((xy!.x / SCREEN_HEIGHT) * tabs.length)]
 		if (!tab) return
-		g.clear()
-		selectedTab = tab
-		selectedTab.draw()
-		drawTabs()
+		selectTab(tab)
 	})
+}
+
+let tabNameTimeout = 0
+export let shownTabText: string | null = null
+
+export function selectTab(tab: Tab) {
+	const firstTime = !selectedTab
+	if (tab === selectedTab) return
+
+	selectedTab = tab
+
+	if (!firstTime) {
+		shownTabText = tab.name
+
+		if (tabNameTimeout) clearTimeout(tabNameTimeout)
+
+		tabNameTimeout = setTimeout(() => {
+			shownTabText = null
+			drawEverything()
+		}, 250) as unknown as number
+	}
+	drawEverything()
 }

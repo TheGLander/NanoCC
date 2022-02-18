@@ -15,7 +15,7 @@ const cookieTab = new Tab("Cookie", "CKI", g => {
 	g.setFontAlign(0, 0, 0)
 	g.setFont("4x6", 2)
 	g.drawString(
-		`${logic.cookies} cookie${logic.cookies === 1 ? "" : "s"}`,
+		`${Math.floor(logic.cookies)} cookie${logic.cookies === 1 ? "" : "s"}`,
 		SCREEN_WIDTH / 2,
 		10
 	)

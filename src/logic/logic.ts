@@ -12,6 +12,16 @@ export class Logic {
 		return cpc
 	}
 	priceIncrease = 1.15
+	cps = 0
+	calculateCps(): void {
+		this.cps = 0
+		for (const building of this.buildings)
+			this.cps += building.amount * building.baseCps
+	}
+
+	processCps(d: number): void {
+		this.cookies += this.cps * (d / 1000)
+	}
 }
 
 export const logic = new Logic()
@@ -51,6 +61,7 @@ export class Building {
 		if (logic.cookies < price) return false
 		logic.cookies -= price
 		this.amount++
+		logic.calculateCps()
 		return true
 	}
 }

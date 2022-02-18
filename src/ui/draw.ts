@@ -1,3 +1,4 @@
+import { logic } from "../logic/logic"
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "./const"
 import { drawTabs, selectedTab, shownTabText } from "./tabs/tabBase"
 
@@ -11,7 +12,13 @@ interface Particle {
 
 export const particles: Particle[] = []
 
+let lastNow = Date.now()
+let now = Date.now()
+
 export function drawEverything(): void {
+	now = Date.now()
+
+	logic.processCps(now - lastNow)
 	g.clear()
 
 	selectedTab.draw(g)
@@ -29,6 +36,7 @@ export function drawEverything(): void {
 		particle.life--
 		if (particle.life < 0) particles.splice(particles.indexOf(particle), 1)
 	}
+	lastNow = now
 }
 
 setInterval(drawEverything, 1000 / 20)

@@ -40,31 +40,12 @@ declare var process: NodeJS.Process & {
 	env: { HWVERSION: number }
 }
 
-const isB2 = process.env.HWVERSION === 2
-
-if (!isB2) {
-	setWatch(
-		() =>
-			selectTab(
-				tabs[(tabs.length + tabs.indexOf(selectedTab) - 1) % tabs.length]
-			),
-		BTN1,
-		{ repeat: true }
-	)
-
-	setWatch(
-		() => selectTab(tabs[(tabs.indexOf(selectedTab) + 1) % tabs.length]),
-		new Pin(0),
-		{ repeat: true }
-	)
-} else {
-	Bangle.on("touch", (_button, xy) => {
-		if (xy!.y < TABS_Y) return
-		const tab = tabs[Math.floor((xy!.x / SCREEN_HEIGHT) * tabs.length)]
-		if (!tab) return
-		selectTab(tab)
-	})
-}
+Bangle.on("touch", (_button, xy) => {
+	if (xy!.y < TABS_Y) return
+	const tab = tabs[Math.floor((xy!.x / SCREEN_HEIGHT) * tabs.length)]
+	if (!tab) return
+	selectTab(tab)
+})
 
 let tabNameTimeout = 0
 export let shownTabText: string | null = null

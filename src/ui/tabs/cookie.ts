@@ -13,6 +13,7 @@ const cookieTab = new Tab("Cookie", "CKI", g => {
 		{ scale: 2 }
 	)
 	g.setFontAlign(0, 0, 0)
+	g.setFont("4x6", 2)
 	g.drawString(
 		`${logic.cookies} cookie${logic.cookies === 1 ? "" : "s"}`,
 		SCREEN_WIDTH / 2,
@@ -27,5 +28,5 @@ Bangle.on("touch", (_btn, xy) => {
 	if (!xy)
 		xy = { x: Math.random() * SCREEN_WIDTH, y: Math.random() * SCREEN_HEIGHT }
 	const cpc = logic.clickCookie()
-	particles.push({ x: xy.x, y: xy.y, str: `+${cpc}`, life: 5 })
+	particles.push({ x: xy.x, y: xy.y, str: `+${cpc}`, life: 5, size: 2 })
 })

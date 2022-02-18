@@ -27,8 +27,9 @@ declare class Graphics {
 		bgH: number // highlighted background colour
 		dark: boolean // Is background dark (eg. foreground should be a light colour)
 	}
-	setColor(colorId: number): void
-	setBgColor(colorId: number): void
+
+	setColor(colorId: number | string): void
+	setBgColor(colorId: number | string): void
 	flip(): void
 }
 declare const g: Graphics
@@ -37,6 +38,15 @@ declare const BTN2: Pin
 declare const BTN3: Pin
 declare const BTN4: Pin
 declare const BTN5: Pin
+
+type DragEvent = {
+	x: number
+	y: number
+	dx: number
+	dy: number
+	b: 0 | 1
+}
+
 declare class Bangle {
 	constructor()
 	static setLCDPower: (isOn: boolean) => void
@@ -52,10 +62,12 @@ declare class Bangle {
 	static accelRd: (reg: number, cnt: number) => unknown
 	static project: (latlong: unknown) => unknown
 	static buzz: (time: number, strength: number) => Promise<unknown>
-	static off: (
+	static off: ((
 		event: "touch",
-		handler: (button: 1 | 2, xy: { x: number; y: number }) => void
-	) => void
+		handler: (button: 1 | 2, xy?: { x: number; y: number }) => void
+	) => void) &
+		((event: "drag", handler: (ev: DragEvent) => void) => void)
+
 	static setLCDBrightness: (brightness: number) => void
 	static setLCDMode: (mode: unknown) => void
 	static getLCDMode: () => unknown
@@ -71,10 +83,11 @@ declare class Bangle {
 	static loadWidgets: () => void
 	static drawWidgets: () => void
 	static showLauncher: () => void
-	static on: (
+	static on: ((
 		event: "touch",
 		handler: (button: 1 | 2, xy?: { x: number; y: number }) => void
-	) => void
+	) => void) &
+		((event: "drag", handler: (ev: DragEvent) => void) => void)
 }
 
 interface Widget {

@@ -43,8 +43,11 @@ export class Building {
 		}
 		logic.buildings.push(this)
 	}
+	getPrice(): number {
+		return this.basePrice * logic.priceIncrease ** this.amount
+	}
 	buy(): boolean {
-		const price = this.basePrice * logic.priceIncrease ** this.amount
+		const price = this.getPrice()
 		if (logic.cookies < price) return false
 		logic.cookies -= price
 		this.amount++

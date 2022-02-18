@@ -6,22 +6,24 @@ interface Particle {
 	y: number
 	str: string
 	life: number
+	size: number
 }
 
 export const particles: Particle[] = []
 
 export function drawEverything(): void {
 	g.clear()
+
 	selectedTab.draw(g)
 	drawTabs(g)
+	g.setFontAlign(0, 0, 0)
 	if (shownTabText) {
-		g.setFontAlign(0, 0, 0)
 		g.setFont("4x6", 3)
 		g.drawString(shownTabText, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 	}
-	g.setFontAlign(-1, -1, 0)
-	g.setFont("4x6", 2)
+
 	for (const particle of particles.concat()) {
+		g.setFont("4x6", particle.size)
 		g.drawString(particle.str, particle.x, particle.y)
 		particle.y -= 5
 		particle.life--

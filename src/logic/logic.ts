@@ -1,16 +1,32 @@
 let nextId = 0
 
+export class Logic {
+	cookies = 0
+	buildings: Building[] = []
+	cpc(): number {
+		return 1
+	}
+	clickCookie(): number {
+		const cpc = this.cpc()
+		this.cookies += cpc
+		return cpc
+	}
+	priceIncrease = 1.15
+}
+
+export const logic = new Logic()
+
 export class Building {
 	baseCps = 0
 	basePrice = 0
 	id = 0
 	amount = 0
-	constructor(public logic: Logic, public name: string) {
+	constructor(public name: string) {
 		this.id = nextId
 		nextId++
-		this.baseCps = this.id ** (this.id * 0.5 + 2)
+		this.baseCps = Math.ceil(this.id ** (this.id * 0.5 + 2) * 10) / 10
 		let digits =
-			10 ** Math.ceil(Math.log(Math.ceil(this.baseCps)) / Math.LN10) / 100 + 1
+			10 ** Math.ceil(Math.log(Math.ceil(this.baseCps)) / Math.LN10) / 100
 		this.baseCps = Math.round(this.baseCps / digits) * digits
 
 		this.basePrice =
@@ -21,19 +37,27 @@ export class Building {
 		digits =
 			10 ** Math.ceil(Math.log(Math.ceil(this.basePrice)) / Math.LN10) / 100
 		this.basePrice = Math.round(this.basePrice / digits) * digits
+		if (this.id === 0) {
+			this.baseCps = 0.1
+			this.basePrice = 15
+		}
+		logic.buildings.push(this)
 	}
 	buy(): boolean {
-		const price = this.basePrice * this.logic.priceIncrease ** this.amount
-		if (this.logic.cookies < price) return false
-		this.logic.cookies -= price
+		const price = this.basePrice * logic.priceIncrease ** this.amount
+		if (logic.cookies < price) return false
+		logic.cookies -= price
 		this.amount++
 		return true
 	}
 }
 
-export class Logic {
-	cookies = 0
-	priceIncrease = 1.15
-}
-
-export const logic = new Logic()
+new Building("Cursor")
+new Building("Grandma")
+new Building("Farm")
+new Building("Mine")
+new Building("Factory")
+new Building("Bank")
+new Building("Temple")
+new Building("Wizard tower")
+new Building("Shipment")

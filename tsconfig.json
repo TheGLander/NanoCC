@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"lib": ["ES2015.Core"],
-		"target": "ES2017",
+		"target": "ES2015",
 		"module": "EsNext",
 		"strict": true
 	}

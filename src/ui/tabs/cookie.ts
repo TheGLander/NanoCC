@@ -26,6 +26,6 @@ Bangle.on("touch", (_btn, xy) => {
 	if (selectedTab !== cookieTab) return
 	if (!xy)
 		xy = { x: Math.random() * SCREEN_WIDTH, y: Math.random() * SCREEN_HEIGHT }
-	particles.push({ x: xy.x, y: xy.y, str: "+1", life: 5 })
-	logic.cookies++
+	const cpc = logic.clickCookie()
+	particles.push({ x: xy.x, y: xy.y, str: `+${cpc}`, life: 5 })
 })

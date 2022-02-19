@@ -1,0 +1,19 @@
+
+{
+  "id": "cclicker",
+  "name": "nanoCC",
+  "version": "0.01",
+  "description": "The well known cookie clicker game, on the Bangle.js!",
+  "icon": "cclicker.png",
+  "screenshots": [
+		{ "url": "static/screenshot1.png" },
+		{ "url": "static/screenshot2.png" }
+	],
+  "tags": "game",
+  "supports": ["BANGLEJS2"],
+  "allow_emulator": true,
+  "storage": [
+    { "name": "cclicker.app.js", "url": "dist/index.js" },
+    {"name": "cclicker.img", "url": "cclicker-icon.js", "evaluate": true }
+  ]
+}
